@@ -1,121 +1,74 @@
 package com.example.demo.utils;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+import com.example.demo.utils.model.PIB;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
+import java.util.Optional;
 
 public class Neurona {
 
-    List<Double> input;
+    private String year;
+    private Double pib;
+    private List<PIB> itemsPIB;
 
-    List<Double> weight;
-    Double  error;
-    Double knowledgeFactor;
 
-    public Neurona(List<Double> input, Double error, Double knowledgeFactor) {
-        this.input = input;
-        this.weight = new ArrayList<Double>();
-        this.error = error;
-        this.knowledgeFactor = knowledgeFactor;
+
+    final String  PIB_CONSTANT =
+            "2005\t419.077\t86.720\t88.125\t78.708\t514.853\n" +
+            "2006\t444.943\t101.405\t96.513\t92.625\t549.435\n" +
+            "2007\t472.591\t117.424\t102.516\t105.461\t586.457\n" +
+            "2008\t492.507\t128.090\t104.604\t118.656\t605.713\n" +
+            "2009\t503.416\t120.026\t99.158\t108.395\t612.616\n" +
+            "2010\t529.002\t131.503\t101.203\t120.134\t640.151\n" +
+            "2011\t558.993\t155.852\t113.608\t144.436\t684.628\n" +
+            "2012\t589.694\t160.351\t118.690\t157.977\t711.415\n" +
+            "2013\t621.266\t172.869\t124.241\t171.443\t747.939\n" +
+            "2014\t648.134\t193.533\t123.882\t184.747\t781.589\n" +
+            "2015\t670.201\t191.305\t125.936\t182.750\t804.692\n" +
+            "2016\t681.101\t190.994\t125.673\t176.279\t821.489\n" +
+            "2017\t696.973\t184.828\t128.902\t178.075\t832.656\n" +
+            "2018\t722.941\t188.643\t129.998\t188.389\t853.600\n" +
+            "2019\t755.975\t196.673\t134.072\t205.677\t881.958";
+
+    public Neurona(String year) {
+        this.year = year;
+        this.itemsPIB = new ArrayList<>();
     }
 
-    public double getTangent() {
-        checkTheOutputs();
-        String dto = "-1.0,-1.0,-1.0,-1.0,-1.0\n"
-                + "-1.0,-1.0,-1.0,1.0,-1.0\n"
-                + "-1.0,-1.0,1.0,-1.0,-1.0\n"
-                + "-1.0,-1.0,1.0,1.0,-1.0\n"
-                + "-1.0,1.0,-1.0,-1.0,-1.0\n"
-                + "-1.0,1.0,-1.0,1.0,-1.0\n"
-                + "-1.0,1.0,1.0,-1.0,-1.0\n"
-                + "-1.0,1.0,1.0,1.0,-1.0\n"
-                + "1.0,-1.0,-1.0,-1.0,-1.0\n"
-                + "1.0,-1.0,-1.0,1.0,1.0\n"
-                + "1.0,-1.0,1.0,-1.0,1.0\n"
-                + "1.0,-1.0,1.0,1.0,1.0\n"
-                + "1.0,1.0,-1.0,-1.0,1.0\n"
-                + "1.0,1.0,-1.0,1.0,1.0\n"
-                + "1.0,1.0,1.0,-1.0,1.0\n"
-                + "1.0,1.0,1.0,1.0,1.0";
+    public void getCalculation() {
+        /**
+         * PIB = C + L + G + X - M
+         */
+        String[] item = PIB_CONSTANT.split("\n");
 
-        Double[][] fieldsArray = new Double[16][5];
-
-        String[] fields = dto.split("\n");
-
-        for (int i = 0; i < fields.length; i++) {
-            String[] tmp = fields[i].split(",");
-            for (int j = 0; j < tmp.length; j++) {
-                fieldsArray[i][j] = Double.parseDouble(tmp[j]);
-            }
+        for(String it : item) {
+            String[]  year = it.split("\t");
+            this.itemsPIB.add(new PIB(year[0], Double.parseDouble(year[1]), Double.parseDouble(year[2]),
+                    Double.parseDouble(year[3]), Double.parseDouble(year[4]),Double.parseDouble(year[5])));
         }
 
-        List<String> position = new ArrayList<>();
 
-        for (Double input1 : input) {
-            for (int column = 0; column < 16; column++) {
-                if (Objects.equals(fieldsArray[column][0], input1)) {
-                    position.add(0 + "," + column);
-                }
-            }
-            break;
+        PIB result =this.itemsPIB.stream()
+                .filter(year -> Objects.equals(year.getYear(), this.year))
+                .findFirst()
+                .orElse(null);
+
+        if(result != null ) {
+            this.pib  = result.getConsumption() + result.getInvestment() + result.getPublicSpending() + result.getExports() - result.getImportsItem();
+        } else{
+            this.pib = 0.0;
         }
 
-        for (int i = 0; i < position.size(); i++) {
-            String item = position.get(i);
-            Integer columnItem = Integer.parseInt(item.split(",")[1]);
-            Integer rowItem = Integer.parseInt(item.split(",")[0]);
-            if (checkFirstItem(input, fieldsArray, columnItem, rowItem) != -999.9) {
-                return checkFirstItem(input, fieldsArray, columnItem, rowItem);
-            }
 
-        }
-        return resolver(input.get(0));
     }
 
-    private  Double checkFirstItem(List<Double> input, Double[][] fieldsArray, Integer columItem, Integer rowItem) {
-        if (Objects.equals(input.get(0), fieldsArray[columItem][rowItem])
-                && Objects.equals(input.get(1), fieldsArray[columItem][rowItem + 1])
-                && Objects.equals(input.get(2), fieldsArray[columItem][rowItem + 2])
-                && Objects.equals(input.get(3), fieldsArray[columItem][rowItem + 3])) {
-            return fieldsArray[columItem][rowItem + 4];
-        }
-        return -999.9;
+    public Double getPib() {
+        return pib;
     }
 
-    public void checkTheOutputs(){
-        weight.add(Math.tanh(1*input.get(0) + 1*input.get(1)) - error);
-        weight.add(Math.tanh(1*input.get(0) + -1*input.get(1)) - error);
-        weight.add(Math.tanh(-1*input.get(0) + 1*input.get(1)) - error);
-        weight.add(Math.tanh(-1*input.get(0) + -1*input.get(1)) - error);
-    }
-
-    public Double recalculateWeightRandom(){
-        return new BigDecimal((Math.random() * 10 + 1)).setScale(1, RoundingMode.HALF_EVEN).doubleValue();
-    }
-
-    public double resolverEquationActivation(double x1 , double x2, double w1, double w2, double t) {
-        return (x1*w1)+(x2*w2)+(-1*t);
-    }
-
-    public double resolverWeightEquation(double weight) {
-        return weight+(error*input.get(0)*input.get(1));
-    }
-
-    public int resolver(double value) {
-        if(input.get(0)  == -1 && input.get(1) == - 1){
-            return -1;
-        }
-        return 1;
-    }
-
-    public List<Double> getWeight() {
-        return weight;
-    }
-
-    public void setWeight(List<Double> weight) {
-        this.weight = weight;
+    public void setPib(Double pib) {
+        this.pib = pib;
     }
 }

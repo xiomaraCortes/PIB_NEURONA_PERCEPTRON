@@ -2,7 +2,7 @@ package com.example.demo.adapter.api;
 
 import com.example.demo.adapter.ApiConst;
 import com.example.demo.adapter.facade.NetworkFacade;
-import com.example.demo.service.model.request.NetworkRequestDTO;
+import com.example.demo.service.model.request.PIBRequestDTO;
 import com.example.demo.utils.exception.ConstantErrors;
 import com.example.demo.utils.exception.UMBErrorEnum;
 import com.google.gson.Gson;
@@ -35,10 +35,10 @@ public class NetworkController {
 		return "V20200914_01";
 	}
 
-	@RequestMapping(value = "/network/", method = RequestMethod.POST, produces = APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> getNetworkMultiLayer(@RequestBody NetworkRequestDTO networkRequestDTO) {
+	@RequestMapping(value = "/getPIB/", method = RequestMethod.POST, produces = APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> getPIB(@RequestBody PIBRequestDTO pibRequestDTO) {
 		try {
-			return new ResponseEntity<String>(this.gson.toJson(this.networkFacade.executeNetworkMultiLayer(networkRequestDTO)), HttpStatus.OK);
+			return new ResponseEntity<String>(this.gson.toJson(this.networkFacade.executeGetPib(pibRequestDTO)), HttpStatus.OK);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
