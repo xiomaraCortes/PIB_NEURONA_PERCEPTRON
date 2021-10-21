@@ -60,8 +60,6 @@ public class Neurona {
         } else{
             this.pib = 0.0;
         }
-
-
     }
 
     public Double getPib() {

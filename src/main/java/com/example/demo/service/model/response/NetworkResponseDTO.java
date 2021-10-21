@@ -12,42 +12,18 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class NetworkResponseDTO {
 
-    private List<Double> input;
 
-    private List<Double> height;
+    private Double pib;
 
-    private Double tangent;
-
-    public NetworkResponseDTO() {
+    public NetworkResponseDTO(Double pib) {
+        this.pib = pib;
     }
 
-    public NetworkResponseDTO(List<Double> input, List<Double> height, Double tangent) {
-        this.input = input;
-        this.height = height;
-        this.tangent = tangent;
+    public Double getPib() {
+        return pib;
     }
 
-    public List<Double> getInput() {
-        return input;
-    }
-
-    public void setInput(List<Double> input) {
-        this.input = input;
-    }
-
-    public List<Double> getHeight() {
-        return height;
-    }
-
-    public void setHeight(List<Double> height) {
-        this.height = height;
-    }
-
-    public Double getTangent() {
-        return tangent;
-    }
-
-    public void setTangent(Double tangent) {
-        this.tangent = tangent;
+    public void setPib(Double pib) {
+        this.pib = pib;
     }
 }

@@ -17,7 +17,7 @@ public class PIBService {
 		Neurona n = new Neurona(pibService.getYear());
 
 		DataResponseDTO   dataResponseDTO= new DataResponseDTO( );
-		NetworkResponseDTO networkResponseDTO = new NetworkResponseDTO(networkRequestDTO.getInput(), n.getWeight(), n.getTangent());
+		NetworkResponseDTO networkResponseDTO = new NetworkResponseDTO(n.getPib());
 		dataResponseDTO.setData(networkResponseDTO);
 		return dataResponseDTO;
 
