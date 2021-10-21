@@ -1,11 +1,8 @@
 package com.example.demo.utils;
-
 import com.example.demo.utils.model.PIB;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 public class Neurona {
 

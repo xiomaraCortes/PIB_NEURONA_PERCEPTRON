@@ -15,7 +15,7 @@ public class PIBService {
 	public DataResponseDTO executeNetworkMultiLayer(PIBRequestDTO pibService)  {
 
 		Neurona n = new Neurona(pibService.getYear());
-
+		n.getCalculation();
 		DataResponseDTO   dataResponseDTO= new DataResponseDTO( );
 		NetworkResponseDTO networkResponseDTO = new NetworkResponseDTO(n.getPib());
 		dataResponseDTO.setData(networkResponseDTO);
