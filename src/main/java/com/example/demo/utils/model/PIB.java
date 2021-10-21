@@ -8,7 +8,7 @@ public class PIB {
     private Double exports;
     private Double importsItem;
 
-    public PIB(String year, Double consumption, Double investment, Double publicSpending, Double exports, Double importsItem) {
+    public PIB(String year, Double consumption, Double investment,Double exports, Double importsItem , Double publicSpending) {
         this.year = year;
         this.consumption = consumption;
         this.investment = investment;
