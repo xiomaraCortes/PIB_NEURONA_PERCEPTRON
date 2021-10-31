@@ -17,7 +17,7 @@ public class PIBService {
 		Neurona n = new Neurona(pibService);
 		n.getCalculation();
 		DataResponseDTO   dataResponseDTO= new DataResponseDTO( );
-		NetworkResponseDTO networkResponseDTO = new NetworkResponseDTO(n.getPib(), "");
+		NetworkResponseDTO networkResponseDTO = new NetworkResponseDTO(n.getPib(), n.getMessage());
 		dataResponseDTO.setData(networkResponseDTO);
 		return dataResponseDTO;
 
