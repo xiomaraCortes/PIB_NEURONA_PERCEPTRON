@@ -7,14 +7,16 @@ public class PIB {
     private Double publicSpending;
     private Double exports;
     private Double importsItem;
+    private Integer calculation;
 
-    public PIB(String year, Double consumption, Double investment,Double exports, Double importsItem , Double publicSpending) {
+    public PIB(String year, Double consumption, Double investment,Double exports, Double importsItem , Double publicSpending,  Integer calculation) {
         this.year = year;
         this.consumption = consumption;
         this.investment = investment;
         this.publicSpending = publicSpending;
         this.exports = exports;
         this.importsItem = importsItem;
+        this.calculation = calculation;
     }
 
     public String getYear() {
@@ -63,5 +65,13 @@ public class PIB {
 
     public void setImportsItem(Double importsItem) {
         this.importsItem = importsItem;
+    }
+
+    public Integer getCalculation() {
+        return calculation;
+    }
+
+    public void setCalculation(Integer calculation) {
+        this.calculation = calculation;
     }
 }

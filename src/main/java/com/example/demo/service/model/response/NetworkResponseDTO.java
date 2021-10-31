@@ -14,9 +14,11 @@ public class NetworkResponseDTO {
 
 
     private Double pib;
+    private String message;
 
-    public NetworkResponseDTO(Double pib) {
+    public NetworkResponseDTO(Double pib, String message) {
         this.pib = pib;
+        this.message = message;
     }
 
     public Double getPib() {
